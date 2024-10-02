@@ -1,7 +1,7 @@
 import React from 'react'
 
 function AbreviaUC(props) {
-    const unidade = prpos.unidade_curricular.split('');
+    const unidade = props.unidade_curricular.split('');
     if (unidade.length==1){
         return unidade[0]
     }

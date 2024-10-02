@@ -1,14 +1,13 @@
 import React from 'react'
 
 function AbreviaInstrutor(props) {
-    const nomes = props.nomeCompleto.split(' ');
-
-    if(nomes.length === 1){
-        return nomes[0]
-    }
-
+  const nomes = props.nomeCompleto.split(' ');
+  
+  if (nomes.length === 1){
+      return nomes[0]
+  }
   return (
-    nomes[0] + ' '+ nomes.pop()
+      nomes[0] + ' '+ nomes.pop()
   )
 }
 

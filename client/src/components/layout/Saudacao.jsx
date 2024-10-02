@@ -1,48 +1,38 @@
-import { useEffect,useState } from "react";
-import styles from './Saudacao.module.css'
-function Saudacao(){
+import { useEffect } from "react"
 
-    // criando estado de saudação
-    const [saudacaoPeriodo, setSaudacaoPeriodo]= useState('');
+function Saudacao() {
+    useEffect(()=>{
+        saudacaoHora();
+    },[]);
 
-    //criando texto de saudação
-    function atualizaSaudacao(){
-        const agora = new Date();
+    function saudacaoHora() {
+        const hoje = new Date()
+        const hora = hoje.getHours()
+        const saudacao = document.getElementById("saudacao")
+        const dia = hoje.getDay()
+        const diaSemana = ["Domingo",
+            "Segunda-Feira",
+            "Terça-Feira",
+            "Quarta-Feira",
+            "Quinta-Feira",
+            "Sexta-Feira",
+            "Sábado"]
 
-        //obtendo hora em inteiro exemplo 21:15 retorna 21
-        const hora = agora.getHours();
-
-        //obtendo o dia da semana em inteiro iniciando em domingo como 0 e sabado como 6
-        const dia = agora.getDay();
-
-        //declarando variavel texto saudacao
-        let textoSaudacao = '';
-
-        //definindo array dias da semana 
-        const diaSemana= ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira', 'sabado'
-
-        ];
-
-        // adicionando o dia da semana ao textoSaudacao
-        textoSaudacao+= diaSemana[dia];
-
-        if(hora>=18){
-            textoSaudacao += ' - Boa Noite !'
-        } else if (hora>=12){
-            textoSaudacao += ' - Boa Tarde !'
-        }else if (hora>=6){
-            textoSaudacao += ' - Boa Dia !'
-        }else{
-            textoSaudacao += 'Boa Madrugada'
+        saudacao.innerHTML = diaSemana[dia]
+        if (hora >= 18) {
+            saudacao.innerHTML += " - Boa Noite"
+        } else if (hora >= 12) {
+            saudacao.innerHTML += " - Boa Tarde"
+        } else if (hora >= 6) {
+            saudacao.innerHTML += " - Bom Dia"
+        } else {
+            saudacao.innerHTML += " - Boa Madrugada"
         }
-
-        setSaudacaoPeriodo(textoSaudacao);
-
+        setTimeout(() => saudacaoHora(), 1000);
     }
-    return(
-        <div className={styles.saudacao}>{saudacaoPeriodo}</div>
+    return (
+        <div id="saudacao" className="saudacao">Sexta-Feira - Boa noite!!!</div>
     )
-
 }
 
 export default Saudacao;
