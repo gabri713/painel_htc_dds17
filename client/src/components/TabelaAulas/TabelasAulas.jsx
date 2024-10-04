@@ -39,17 +39,18 @@ function TabelaAulas() {
   }
   return (
     
-    <div className={styles.aulas}>
+    <div className={`${styles.aulas} ${tipo==='edit'? styles.edit:''}`}>
       
       <table className={styles.tabelaAulas}>
         <thead>
           <tr>
             <th>Inicio</th>
-            <th>Fim</th>
+            <th className={styles.fim}>Fim</th>
             <th>Turma</th>
             <th>Intrutor</th>
             <th>Unidade Curricular</th>
             <th>Ambiente</th>
+            {tipo ==='edit' &&<Acoes}
           </tr>
         </thead>
         <tbody>
@@ -64,6 +65,7 @@ function TabelaAulas() {
                 {<AbreviaUC unidade_curricular={aula.unidade_curricular} />}
               </td>
               <td>{<AbreviaAmbiente nomeAmbiente={aula.ambiente} />}</td>
+              
             </tr>
           ))}
         </tbody>
