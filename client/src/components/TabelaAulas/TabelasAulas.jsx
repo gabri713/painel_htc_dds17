@@ -5,16 +5,14 @@ import AbreviaInstrutor from './AbreviaInstrutor';
 import AbreviaUC from './AbreviaUC';
 import AbreviaAmbiente from './AbreviaAmbiente';
 import Loading from '../layout/Loading';
+
 function TabelaAulas() {
   const [aulas, setAulas] = useState([]);
-  const [removeLoading,setRemoveLoading] = useState(false);
-
+  const [removeLoading, setRemoveLoading] = useState(false);
   useEffect(() => {
-    setTimeout(() =>{
+    setTimeout(() => {
       carregarAulas();
-
-    },3000);
-    
+    }, 300);
   }, []);
 
   async function carregarAulas() {
@@ -37,10 +35,30 @@ function TabelaAulas() {
       console.log('Erro ao buscar aulas', error);
     }
   }
-  return (
+  async function deletarAula(id){
+    try{
+      const resposta = await fetch (`http://localhost:5000/aulas/${id}`,{
+        method:'DELETE',
+        headers:{
+          'Content-type':'application/json'
+        }
+      });
+      if (!resposta.ok) {
+        const erro = await resposta.json();
+        throw new Error('Erro ao deletar usuario', error);
+      }
+      else{
+        alert('aula deletada');
+        setAulas(aulas.filter(aula=>aula.id !== id))
+      }
+    } catch(error){
+      throw new Error ('Erro ao deletar usuario', error);
+    }
     
-    <div className={`${styles.aulas} ${tipo==='edit'? styles.edit:''}`}>
-      
+
+  }
+  return (
+    <div className={`${styles.aulas} ${tipo ==='edit' ? styles.edit:''}`}>
       <table className={styles.tabelaAulas}>
         <thead>
           <tr>
@@ -50,31 +68,26 @@ function TabelaAulas() {
             <th>Intrutor</th>
             <th>Unidade Curricular</th>
             <th>Ambiente</th>
-            {tipo ==='edit' &&<Acoes}
           </tr>
         </thead>
         <tbody>
-        
           {aulas.map((aula) => (
             <tr key={aula.id}>
               <td>{<AbreviaData data={aula.data_hora_inicio} />}</td>
-              <td>{<AbreviaData data={aula.data_hora_fim} />}</td>
+              <td className={styles.fim}>{<AbreviaData data={aula.data_hora_fim} />}</td>
               <td>{aula.turma}</td>
               <td>{<AbreviaInstrutor nomeCompleto={aula.instrutor} />}</td>
               <td>
                 {<AbreviaUC unidade_curricular={aula.unidade_curricular} />}
               </td>
               <td>{<AbreviaAmbiente nomeAmbiente={aula.ambiente} />}</td>
-              
             </tr>
           ))}
         </tbody>
       </table>
-      {!removeLoading && <Loading/>}
-      {removeLoading && aulas.length ===0 && <h1>Não há aulas disponiveis</h1>}
-
+      {!removeLoading && <Loading />}
+      {removeLoading && aulas.length === 0 && <h1>Não há aulas disponíveis</h1>}
     </div>
-    
   );
 }
 

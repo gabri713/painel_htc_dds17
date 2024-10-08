@@ -15,12 +15,12 @@ function Navbar() {
         </ul>
         <ul>
             <li className='nav-item'>
-                <Link className= 'nav-link' to=''>Login</Link>
+                <Link className= 'nav-link' to='/login'>Login</Link>
             </li>
         </ul>
         <ul>
             <li className='nav-item'>
-                <Link className= 'nav-link'  to=''>Cadsatro Aulas</Link>
+                <Link className= 'nav-link'  to='/gestao_aulas'>Gestão Aulas</Link>
             </li>
         </ul>
       </nav>
