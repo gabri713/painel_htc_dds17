@@ -3,20 +3,17 @@ import Navbar from "../layout/Navbar";
 import { Link } from "react-router-dom";
 import FormAula from "../EditarAula/EditarAula";
 
-async function CadastroAulas() {
-  
-  
-
-  
-
+function CadastroAulas() {
+  async function cadastrarAula(infoAula) {
+    
     try {
       //POST e usado para inserir elementos na API
       const resposta = await fetch("http://localhost:5000/aulas", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(infoAula),
+        body: JSON.stringify(infoAula)
       });
 
       if (!resposta.ok) {
@@ -32,7 +29,7 @@ async function CadastroAulas() {
   return (
     <div>
       <Navbar />
-      <FormAula titulo='Editar Aula' txtBtn='Salvar' id={id}/>
+      <FormAula titulo='Editar Aula' txtBtn='Salvar' id={id} tipo='editada'/>
     </div>
   );
 }
