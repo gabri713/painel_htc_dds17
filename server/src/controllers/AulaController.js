@@ -1,67 +1,90 @@
-import { createAula, readAulas,updateAulas,deleteAulas } from "../models/AulaModel.js";
-
-export async function CadastroAulas(req,res){
-    console.log('AulaController cadastroAula')
-    // criando constante aula
-    const aula= req.body;
-    try {
-        //declarando status com o codigo da resposta e resposta com JSON
-        const [status,resposta] = await createAula(aula);
-        res.status(status).json(resposta);
-
-    }catch(error){
-        console.log(error);
-        res.status(500).json(error);
-
-    }
-}
-
-export async function mostrandoAulas(req, res) {
-    console.log('AulaController mostrandoAulas');
-    try{
-        const[status,resposta] = await readAulas();
-        res.status(status).json(resposta);
-    }catch(error){
-        console.log(error);
-        res.status(500).json(error);
-
-    }
-    
-}
-
-export async function atualizandoAulas(req, res) {
-    console.log('AulaController atualizandoAulas');
-    const{id} = req.params;
+import {
+    createAula,
+    readAulas,
+    updateAula,
+    deleteAula,
+    getOneAula,
+  } from '../models/AulaModel.js';
+  import { isNullOrEmpty, validateAula } from '../validations/AulaValidation.js';
+  
+  export async function cadastroAula(req, res) {
+    console.log('AulaController cadastroAula');
+    //Criando constante aula
     const aula = req.body;
-
-
-    try{
-        const[status,resposta] = await updateAulas(aula, id); 
+  
+    if (validateAula(aula)) {
+      res.status(400).json({ message: 'Aula não pode conter campos vazios' });
+    } else {
+      try {
+        //Declarando status com o codigo da resposta e reposta como JSON
+        const [status, resposta] = await createAula(aula);
         res.status(status).json(resposta);
-    }catch (error){
+      } catch (error) {
         console.log(error);
         res.status(500).json(error);
-
+      }
     }
-    
-}
-
-export async function excluindoAula(req,res) {
+  }
+  
+  export async function mostrandoAulas(req, res) {
+    console.log('AulaController mostrandoAulas');
+    try {
+      const [status, resposta] = await readAulas();
+      res.status(status).json(resposta);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  }
+  
+  export async function atualizandoAula(req, res) {
+    console.log('AulaController atualizandoAula');
+    const { id } = req.params;
+    const aula = req.body;
+  
+    if (validateAula(aula) || isNullOrEmpty(id)) {
+      res.status(400).json({ message: 'Aula não pode conter campos vazios' });
+    } else {
+      try {
+        const [status, resposta] = await updateAula(aula, id);
+        res.status(status).json(resposta);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+      }
+    }
+  }
+  
+  export async function excluindoAula(req, res) {
     console.log('AulaController excluindoAula');
-    const{id} = req.params; 
-
-    try{
-        const[status,resposta] = await deleteAulas(aula, id); 
+    const { id } = req.params;
+  
+    if (isNullOrEmpty(id)) {
+      res.status(400).json({ message: 'O id deve ser preenchido' });
+    } else {
+      try {
+        const [status, resposta] = await deleteAula(id);
         res.status(status).json(resposta);
-    }catch (error){
+      } catch (error) {
         console.log(error);
         res.status(500).json(error);
-
+      }
     }
-    
-}
-
-
-export const deletandoAula = async ()=>{
-
-}
+  }
+  
+  export async function mostrandoUmaAula(req, res) {
+    console.log('AulaController mostrandoUmaAula');
+    const { id } = req.params;
+  
+    if (isNullOrEmpty(id)) {
+      res.status(400).json({ message: 'O id deve ser preenchido' });
+    } else {
+      try {
+        const [status, resposta] = await getOneAula(id);
+        res.status(status).json(resposta);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+      }
+    }
+  }

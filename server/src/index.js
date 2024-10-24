@@ -1,31 +1,33 @@
-// importando pacote express
+//Importando pacote express
 import express from 'express';
+//Importando cors
+import cors from 'cors';
 
-import {cadastroAula, mostrandoAulas, atualizandoAulas,excluindoAulas} from './controllers/AulaController.js';
 
-// instanciando objeto express
+import { cadastroAula,mostrandoAulas, atualizandoAula, excluindoAula, mostrandoUmaAula } from './controllers/AulaController.js';
+
+//Intanciando objeto express
 const app = express();
 const porta = 5000;
 
-// configurando comunicação em JSON
+//Configurando comunicação em JSON
 app.use(express.json());
 
-// rotas de teste da api
-app.get('/',(req,res)=>{
-    res.send('API funcionando');
+//Permitindo acesso do front ao backend atraves do localhost
+app.use(cors());
+
+//Rota de teste da API
+app.get('/', (req, res) => {
+  res.send('API funcionando');
 });
 
-//rotas de CRUD de aula
+//Rotas de CRUD de aulas
+app.post('/aulas',cadastroAula);
+app.get('/aulas',mostrandoAulas);
+app.get('/aulas/:id',mostrandoUmaAula);
+app.put('/aulas/:id',atualizandoAula);
+app.delete('/aulas/:id',excluindoAula);
 
-app.post('/aulas', cadastroAula);
-app.get('/aulas', mostrandoAulas);
-app.put('/aulas/:id',atualizandoAulas)
-app.delete('/aulas/:id',excluindoAulas);
-
-
-
-
-
-app.listen(porta,()=>{
-   console.log(`API funcionando ${porta}`);
+app.listen(porta, () => {
+  console.log(`API funcionando na porta ${porta}`);
 });
